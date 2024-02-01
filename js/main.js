@@ -32,14 +32,14 @@ new Vue({
                     items: this.newItemText.filter(item => item.trim() !== '').map(item => ({ text: item, completed: false }))
                 };
                 if (newCard.items.length < 3) {
-                    alert("Пожалуйста, добавьте не менее 3-х пунктов!");
+                    alert("Пожалуйста, добавьте не менее 3-х пунктов, но не более 5!");
                 } else if (this.newCardTitle !== '' && newCard.items.length >= 3 && newCard.items.length <= 5) {
                     this.column1.push(newCard);
                     this.handleCardPosition(newCard);
                     this.newCardTitle = '';
                     this.newItemText = [''];
                 } else {
-                    alert("Не более 5 пунктов, не наглеем");
+                    alert("Не более 5 пунктов, не наглеем, лишнее стираем!");
                 }
             }
             this.saveData();
