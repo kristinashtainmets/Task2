@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -8,16 +8,18 @@
     <script defer src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
 </head>
-
 <body>
 <div id="app">
     <form @submit.prevent="addCard">
         <label for="card-title">Введите название заметки</label>
         <input id="card-title" type="text" v-model="newCardTitle">
-
-        <label for="card-items">Добавьте пункты к списку(с новой строки):</label>
-        <textarea id="card-items" v-model="newItemText"></textarea>
-
+    
+        <label for="card-items">Добавьте пункты к списку:</label>
+        <div v-for="(item, index) in newItemText" :key="index">
+            <input type="text" v-model="newItemText[index]">
+        </div>
+        <button type="button" @click="addItem">Добавить пункт</button>
+    
         <button type="submit">Создать заметку</button>
     </form>
     <div class="column">
@@ -60,7 +62,6 @@
         </div>
     </div>
 </div>
-
 </body>
 
 </html>

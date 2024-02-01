@@ -6,7 +6,7 @@ new Vue({
             column2: JSON.parse(localStorage.getItem('column2')) || [],
             column3: JSON.parse(localStorage.getItem('column3')) || [],
             newCardTitle: '',
-            newItemText: '', 
+            newItemText: [''], 
         }
     },
     methods: {
@@ -29,7 +29,7 @@ new Vue({
                 const newCard = {
                     id: Date.now(),
                     title: this.newCardTitle,
-                    items: this.newItemText.split('\n').filter(item => item.trim() !== '').map(item => ({ text: item, completed: false }))
+                    items: this.newItemText.filter(item => item.trim() !== '').map(item => ({ text: item, completed: false }))
                 };
                 if (newCard.items.length < 3) {
                     alert("Пожалуйста, добавьте не менее 3-х пунктов!");
@@ -37,7 +37,7 @@ new Vue({
                     this.column1.push(newCard);
                     this.handleCardPosition(newCard);
                     this.newCardTitle = '';
-                    this.newItemText = '';
+                    this.newItemText = [''];
                 } else {
                     alert("Не более 5 пунктов, не наглеем");
                 }
@@ -48,6 +48,9 @@ new Vue({
             localStorage.setItem('column1', JSON.stringify(this.column1));
             localStorage.setItem('column2', JSON.stringify(this.column2));
             localStorage.setItem('column3', JSON.stringify(this.column3));
+        },
+        addItem() {
+            this.newItemText.push(''); // Добавьте новый пустой элемент в массив
         }
     }
 })
