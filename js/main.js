@@ -1,55 +1,46 @@
-const app = new Vue({
+new Vue({
     el: '#app',
-    data: {
-        columns: [
-            { id: 1, notes: [], maxCards: 3 },
-            { id: 2, notes: [], maxCards: 5 },
-            { id: 3, notes: [] }
-        ],
-        newNote: { content: '', items: [] },
-        newItem: ''
+    data() {
+        return {
+            column1: [],
+            column2: [],
+            column3: [],
+            newCardTitle: '',
+            newItemText: '', 
+        }
     },
-    methods:{
-        addNote(columnId){
-            const column = this.columns.find(col => col.id === columnId);
-            if(column && (!column.maxCards || column.notes.length < column.maxCards)){
-                if(column.notes.length > 0 && column.notes[column.notes.length - 1].items.length < 3){
-                    alert('Пожалуйста, добавьте не менее 3 пунктов в текущую заметку перед созданием новой');
-                    return;
-                }
-                column.notes.push({ ...this.newNote, completedAt: null });
-                this.newNote = { content: '', items: [] };
+    methods: {
+        handleCardPosition(card) {
+            const totalItems = card.items.length;
+            const completedItems = card.items.filter(item => item.completed).length;
+
+            if (completedItems / totalItems > 0.5 && this.column1.includes(card)) {
+                this.column1.splice(this.column1.indexOf(card), 1);
+                this.column2.push(card);
+            } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
+                this.column2.splice(this.column2.indexOf(card), 1);
+                this.column3.push(card);
+                card.completedDate = new Date().toLocaleString(); 
             }
         },
-        addItem(note){
-            if(note.items.length < 5){
-                note.items.push({ content: this.newItem, done: false, clicked: false });
-                this.newItem = '';
-            }
-        },
-        toggleItem(item, note){
-            if(!item.clicked){
-                item.done = !item.done;
-                item.clicked = true;
-            }
-            this.checkNoteCompletion(note);
-        },
-        checkNoteCompletion(note){
-            const doneItems = note.items.filter(item => item.done).length;
-            if(doneItems > note.items.length / 2){
-                const noteIndex = this.columns[0].notes.indexOf(note);
-                if(noteIndex > -1){
-                    // Создаем копию заметки
-                    const noteCopy = JSON.parse(JSON.stringify(note));
-                    // Удаляем заметку из первого столбца
-                    this.columns[0].notes.splice(noteIndex, 1);
-                    // Добавляем копию заметки во второй столбец
-                    this.columns[1].notes.push(noteCopy);
-                    // Обновляем заметки в каждом столбце, чтобы Vue мог отслеживать изменения
-                    this.$set(this.columns[0], 'notes', [...this.columns[0].notes]);
-                    this.$set(this.columns[1], 'notes', [...this.columns[1].notes]);
+        addCard() {
+            if (this.newCardTitle !== '' && this.column1.length < 3) {
+                const newCard = {
+                    id: Date.now(),
+                    title: this.newCardTitle,
+                    items: this.newItemText.split('\n').filter(item => item.trim() !== '').map(item => ({ text: item, completed: false }))
+                };
+                if (newCard.items.length < 3) {
+                    alert("Пожалуйста, добавьте не менее 3-х пунктов!");
+                } else if (this.newCardTitle !== '' && newCard.items.length >= 3 && newCard.items.length <= 5) {
+                    this.column1.push(newCard);
+                    this.handleCardPosition(newCard);
+                    this.newCardTitle = '';
+                    this.newItemText = '';
+                } else {
+                    alert("Не более 5 пунктов, не наглеем");
                 }
             }
         }
     }
-});
+})
