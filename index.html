@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script defer src="js/vue.js"></script>
+    <script defer src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <title>Product App</title>
+</head>
+<body>
+    <div id="app">
+        <div v-for="column in columns" :key="column.id" class="column">
+            <div v-for="note in column.notes" :key="note.id" class="note" 
+                 :class="{ done: note.done }" @click="toggleNote(note)">
+                {{ note.content }}
+                <ul>
+                    <li v-for="item in note.items" :key="item.id" 
+                        :class="{ done: item.done }">
+                        <div class="item">
+                            <span>{{ item.content }}</span>
+                            <input type="checkbox" v-model="item.done" v-bind:disabled="item.clicked">
+                        </div>
+                    </li>
+                </ul>
+                <input v-if="note.items.length < 5" v-model="newItem" placeholder="New item">
+                <button v-if="note.items.length < 5" @click.stop="addItem(note)">Add Item</button>
+            </div>
+            <input v-model="newNote.content" placeholder="New note">
+            <button @click="addNote(column.id)" 
+                    v-if="!column.maxCards || column.notes.length < column.maxCards">
+                    Add Note
+            </button>
+        </div>
+    </div>                      
+</body>
+</html>
