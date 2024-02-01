@@ -2,9 +2,9 @@ new Vue({
     el: '#app',
     data() {
         return {
-            column1: [],
-            column2: [],
-            column3: [],
+            column1: JSON.parse(localStorage.getItem('column1')) || [],
+            column2: JSON.parse(localStorage.getItem('column2')) || [],
+            column3: JSON.parse(localStorage.getItem('column3')) || [],
             newCardTitle: '',
             newItemText: '', 
         }
@@ -22,6 +22,7 @@ new Vue({
                 this.column3.push(card);
                 card.completedDate = new Date().toLocaleString(); 
             }
+            this.saveData();
         },
         addCard() {
             if (this.newCardTitle !== '' && this.column1.length < 3) {
@@ -41,6 +42,12 @@ new Vue({
                     alert("Не более 5 пунктов, не наглеем");
                 }
             }
+            this.saveData();
+        },
+        saveData() {
+            localStorage.setItem('column1', JSON.stringify(this.column1));
+            localStorage.setItem('column2', JSON.stringify(this.column2));
+            localStorage.setItem('column3', JSON.stringify(this.column3));
         }
     }
 })
