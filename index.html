@@ -12,7 +12,15 @@
 </head>
 <body>
     <div id="app">
-        <div v-for="column in columns" :key="column.id" class="column">
+        <!-- Поля для создания новой заметки теперь находятся над столбцами -->
+        <div>
+            <input v-model="newNote.content" placeholder="New note">
+            <button @click="addNote(columns[0].id)" 
+                    v-if="!columns[0].maxCards || columns[0].notes.length < columns[0].maxCards">
+                    Add Note
+            </button>
+        </div>
+        <div v-for="(column, index) in columns" :key="column.id" class="column">
             <div v-for="note in column.notes" :key="note.id" class="note" 
                  :class="{ done: note.done }" @click="toggleNote(note)">
                 {{ note.content }}
@@ -28,11 +36,6 @@
                 <input v-if="note.items.length < 5" v-model="newItem" placeholder="New item">
                 <button v-if="note.items.length < 5" @click.stop="addItem(note)">Add Item</button>
             </div>
-            <input v-model="newNote.content" placeholder="New note">
-            <button @click="addNote(column.id)" 
-                    v-if="!column.maxCards || column.notes.length < column.maxCards">
-                    Add Note
-            </button>
         </div>
     </div>                      
 </body>
