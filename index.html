@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Storing notes</title>
+    <title>Заметки</title>
     <link rel="stylesheet" href="css/main.css">
     <script defer src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
@@ -12,13 +12,13 @@
 <body>
 <div id="app">
     <form @submit.prevent="addCard">
-        <label for="card-title">Заголовок:</label>
+        <label for="card-title">Введите название заметки</label>
         <input id="card-title" type="text" v-model="newCardTitle">
 
-        <label for="card-items">Пункты списка (каждый пункт с новой строки):</label>
+        <label for="card-items">Добавьте пункты к списку(с новой строки):</label>
         <textarea id="card-items" v-model="newItemText"></textarea>
 
-        <button type="submit">Добавить карточку</button>
+        <button type="submit">Создать заметку</button>
     </form>
     <div class="column">
         <h2>Запланировано</h2>
