@@ -50,7 +50,7 @@ new Vue({
             localStorage.setItem('column3', JSON.stringify(this.column3));
         },
         addItem() {
-            this.newItemText.push(''); // Добавьте новый пустой элемент в массив
+            this.newItemText.push(''); 
         }
     }
 })
