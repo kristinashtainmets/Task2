@@ -10,20 +10,25 @@
 </head>
 <body>
 <div id="app">
-    <form @submit.prevent="addCard">
-        <label for="card-title">Введите название заметки</label>
-        <input id="card-title" type="text" v-model="newCardTitle">
-    
-        <label for="card-items">Добавьте пункты к списку:</label>
-        <div v-for="(item, index) in newItemText" :key="index">
-            <input type="text" v-model="newItemText[index]">
-        </div>
-        <button type="button" @click="addItem">Добавить пункт</button>
-    
-        <button type="submit">Создать заметку</button>
-    </form>
     <div class="column">
         <h2>Запланировано</h2>
+        <button v-if="!showForm" @click="showForm = !showForm">+</button>
+        <button v-else @click="showForm = !showForm">-</button>
+        <form v-if="showForm" @submit.prevent="addCard">
+            <label for="card-title">Введите название заметки</label>
+            <input id="card-title" type="text" v-model="newCardTitle">
+        
+            <button v-if="!showItemForm" @click="showItemForm = !showItemForm">Добавить пункты</button>
+            <div v-if="showItemForm">
+                <label for="card-items">Добавьте пункты к списку:</label>
+                <div v-for="(item, index) in newItemText" :key="index">
+                    <input type="text" v-model="newItemText[index]">
+                </div>
+                <button type="button" @click="addItem">Добавить пункт</button>
+            </div>
+        
+            <button type="submit">Создать заметку</button>
+        </form>
         <div v-for="card in column1" :key="card.id" class="card">
             <h3>{{ card.title }}</h3>
             <ul>
@@ -69,5 +74,4 @@
     </div>
 </div>
 </body>
-
 </html>

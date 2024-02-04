@@ -7,6 +7,8 @@ new Vue({
             column3: JSON.parse(localStorage.getItem('column3')) || [],
             newCardTitle: '',
             newItemText: [''], 
+            showForm: false,
+            showItemForm: false,
         }
     },
     methods: {
@@ -15,8 +17,12 @@ new Vue({
             const completedItems = card.items.filter(item => item.completed).length;
 
             if (completedItems / totalItems > 0.5 && this.column1.includes(card)) {
-                this.column1.splice(this.column1.indexOf(card), 1);
-                this.column2.push(card);
+                if (this.column2.length < 5) {
+                    this.column1.splice(this.column1.indexOf(card), 1);
+                    this.column2.push(card);
+                } else {
+                    alert("Во втором столбце может быть не более 5 заметок!");
+                }
             } else if (completedItems / totalItems === 1 && this.column2.includes(card)) {
                 this.column2.splice(this.column2.indexOf(card), 1);
                 this.column3.push(card);
